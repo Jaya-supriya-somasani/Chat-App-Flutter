@@ -18,19 +18,22 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => WelcomeBloc(),
-      child: ScreenUtilInit(
-        builder: (context,child)=>const MaterialApp(
-          home: Welcome(),
-        ),
-      )
-    );
+    return MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => WelcomeBloc()),
+          BlocProvider(create: (context) => AppBloc())
+        ],
+        child: ScreenUtilInit(
+          builder: (context, child) => const MaterialApp(
+            home: Welcome(),
+          ),
+        ));
   }
 }
 
 class MyHomePage extends StatelessWidget {
   const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(

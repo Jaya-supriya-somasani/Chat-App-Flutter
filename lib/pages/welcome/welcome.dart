@@ -1,8 +1,8 @@
+import 'package:chat_app/main.dart';
 import 'package:chat_app/pages/welcome/bloc/welcome_blocs.dart';
 import 'package:chat_app/pages/welcome/bloc/welcome_events.dart';
 import 'package:chat_app/pages/welcome/bloc/welcome_states.dart';
 import 'package:dots_indicator/dots_indicator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -15,6 +15,8 @@ class Welcome extends StatefulWidget {
 }
 
 class _WelcomeState extends State<Welcome> {
+  PageController pageController = PageController(initialPage: 0);
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -29,6 +31,7 @@ class _WelcomeState extends State<Welcome> {
                   alignment: Alignment.topCenter,
                   children: [
                     PageView(
+                      controller: pageController,
                       onPageChanged: (index) {
                         state.page = index;
 
@@ -43,21 +46,21 @@ class _WelcomeState extends State<Welcome> {
                             "Next",
                             "First See Learning",
                             "Forgot about a for of paper all knowledge in one learning",
-                            "imgpath"),
+                            "assets/images/reading.png"),
                         _page(
                             2,
                             context,
                             "Next",
                             "Connect with every one",
                             "Always keep in touch with your tutor & friend. Let's get connected.",
-                            "imgpath"),
+                            "assets/images/boy.png"),
                         _page(
                             3,
                             context,
                             "Get Started",
                             "Always fascinated learning",
                             "Anywhere, anytime. The time is at your discretion. So study when you want.",
-                            "imgpath"),
+                            "assets/images/man.png"),
                       ],
                     ),
                     Positioned(
@@ -89,7 +92,10 @@ class _WelcomeState extends State<Welcome> {
         SizedBox(
           height: 345.h,
           width: 345.w,
-          child: Text("Welcome"),
+          child: Image.asset(
+            imagePath,
+            fit: BoxFit.cover,
+          ),
         ),
         Container(
             child: Text(
@@ -109,27 +115,39 @@ class _WelcomeState extends State<Welcome> {
                   fontSize: 14.sp,
                   fontWeight: FontWeight.normal),
             )),
-        Container(
-          margin: EdgeInsets.only(top: 100.h, left: 25.w, right: 25.w),
-          width: 325.w,
-          height: 50.h,
-          decoration: BoxDecoration(
-              color: Colors.blue,
-              borderRadius: BorderRadius.all(Radius.circular(15.w)),
-              boxShadow: [
-                BoxShadow(
-                    offset: Offset(0, 1),
-                    blurRadius: 2,
-                    spreadRadius: 1,
-                    color: Colors.grey.withOpacity(0.1))
-              ]),
-          child: Center(
-            child: Text(
-              buttonName,
-              style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16.sp,
-                  fontWeight: FontWeight.normal),
+        GestureDetector(
+          onTap: () {
+            if (index < 3) {
+              pageController.animateToPage(index,
+                  duration: const Duration(milliseconds: 500),
+                  curve: Curves.decelerate);
+            } else {
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => const MyHomePage()));
+            }
+          },
+          child: Container(
+            margin: EdgeInsets.only(top: 100.h, left: 25.w, right: 25.w),
+            width: 325.w,
+            height: 50.h,
+            decoration: BoxDecoration(
+                color: Colors.blue,
+                borderRadius: BorderRadius.all(Radius.circular(15.w)),
+                boxShadow: [
+                  BoxShadow(
+                      offset: Offset(0, 1),
+                      blurRadius: 2,
+                      spreadRadius: 1,
+                      color: Colors.grey.withOpacity(0.1))
+                ]),
+            child: Center(
+              child: Text(
+                buttonName,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 16.sp,
+                    fontWeight: FontWeight.normal),
+              ),
             ),
           ),
         )
